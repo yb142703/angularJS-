@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+</head>
+<body>
+    <div ng-app="">
+        
+        <div ng-controller="firstController">
+            {{ date }}
+        </div>
+    <!-- 
+    angular是怎么知道变量发生了改变
+    1.通过固定的接口改变变量的值
+      比如通过set()设置变量的值，set被调用时比较一下就知道了。
+      这种方法缺点是写法繁琐。
+    2.脏方法 
+      将对象复制一份快照，在某个时间，比较现在对象与快照的值，如果不一样就表明发生变化，这个策略要保留两份变量，而且要遍历对象，比较每个属性，这样会有一定性能问题。
+
+    *angular的实现是使用脏检查
+    *angular的策略
+    1.不会脏检查所有的对象，当对象被绑定到HTML中，这个对象添加为检查对象(watcher).
+    2.不会脏检查所有的属性，同样当属性被绑定后，这个属性会被列为检查的属性
+    
+    *在angular程序序列化时，会将绑定的对象的属性添加为监听对象(watcher)，也就是说一个对象绑定了N个属性，就会添加呢N个watcher。
+    -->
+    </div> 
+    
+
+
+
+    <script type="text/javascript">
+    var firstController = function($scope){
+        // 什么是scope？
+        // scope是一个指向应用model的ob ject，也是表达式的执行上下文。
+        // scope被放置于一个类似于应用的DOM结构的层次结构中。
+        $scope.date = new Date();
+         // console.log($scope)
+         // $scope类似与JS作用域链
+         // $scope有父亲 有上层兄弟与下层兄弟
+       
+        // setInterval(function(){
+        //    $scope.data = new Date();
+        //    // 这里虽然变了，但是没有触发脏检查。
+        // }, 1000);
+
+//手动触发脏检查
+//*$apply 仅仅只是进入angular context，然后通过$digest去触发脏检查
+//*$apply 如果不给参数的话，会检查该$scope里所有 监听的属性，推荐加参数
+        setInterval(function(){
+             $scope.$apply(function(){
+                $scope.date = new Date();
+            })
+        },1000);
+
+    }
+
+    </script>
+    <script type="text/javascript" src="angular.js"></script>
+</body>
+</html>

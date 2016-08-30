@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+</head>
+<body>
+<!-- 
+    自定义过滤器
+    module.filter(name.filterFactory)
+    
+    @$filterProvider.register()
+ -->
+<div ng-app='myApp'>
+    <div ng-controller="firstController">
+        <ul>
+            <li ng-repeat="user in data | filterCity">
+                {{ user.name }}
+                {{ user.age }}
+                {{ user.city }}
+            </li>
+        </ul>
+    </div>
+</div>
+
+<script type="text/javascript" src="angular.js"></script>
+<script type="text/javascript">
+    angular.module('myApp',[],function($filterProvider,$provide,$controllerProvider){
+        // 参数不能错
+        // filterProvider 提供过滤器
+        // provide 过滤器
+        // controllerProvider 提供控制器
+        $provide.service('Data',function(){
+            // $provide.service 提供服务
+            return [
+                {
+                    name:'张三',
+                    age:20,
+                    city:'北京'
+                },{
+                    name:'李四',
+                    age:50,
+                    city:'上海'
+                }
+            ]
+        })
+        $filterProvider.register('filterAge',function(){
+            // $filterProvider.register 提供创建过滤器
+            return function(obj){
+                var newObj = [];
+                angular.forEach(obj,function(o){
+                    if (o.age>20) {
+                        newObj.push(o);
+                    };
+                })
+                return newObj;
+            }
+        })
+       
+
+        $controllerProvider.register('firstController',function($scope,Data){
+            // $controllerProvider.register 提供创建控制器
+            $scope.data = Data;
+        })
+
+    })
+
+    // 直接添加过滤器
+    .filter('filterCity',function(){
+        return  function(obj){
+            var newObj = [];
+            angular.forEach(obj,function(o){
+                if (o.city === '北京') {
+                    newObj.push(o);
+                };
+            })
+            return newObj;
+        }
+    })
+
+</script>
+
+</body>
+</html>

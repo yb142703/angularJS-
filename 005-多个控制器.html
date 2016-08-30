@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>Document</title>
+</head>
+<body>
+	<div ng-app="">
+		<!-- 第一个控制器 -->
+		<div ng-controller="firstController">
+			firstController:<input type="text" value="" ng-model="name" />
+			<input type="text" value="" ng-model="age" />
+			<!-- 第二个控制器 -->
+			<div ng-controller="secondController">
+				secondController:<input type="text" value="" ng-model="name" />
+				<input type="text" value="" ng-model="age" />
+			</div>
+			<!-- 在控制器里面的控制器 如果找不到数据就会往上查找 -->
+		</div>
+	</div>
+	<script>
+	var firstController = function($scope){
+		$scope.name = "张三";
+		$scope.age = 22;
+		console.log($scope)
+	}
+	var secondController = function($scope){
+		//  作用域 
+		//  firstConroller下面 secondController 没有 name跟age那么就会向上查找
+		console.log($scope)
+		// $scope.name = "李四";
+		// $scope.age = 30;
+	}
+	</script>
+	<script src="angular.js"></script>
+</body>
+</html>

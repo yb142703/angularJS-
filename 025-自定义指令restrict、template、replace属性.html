@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+</head>
+<body>
+   <p>restrict(限制 约束)、template(模板)、replace(替换 取代)</p>
+    <h1>指令的定义</h1>
+    <p>
+    1. module.directive(name,directiveFactory) ->自定义指令
+    <br>
+    2. @see $compileProvider.directive() ->服务自定义指令的方法
+    </p>
+    <br />
+    <br />
+    <h2>指令的名字</h2>
+    <p>1. 不要使用ng为指令命名，这样可能会和angular内置指令冲突</p>
+    <p>2. 如果指令的名字为xxx-yyy 在设置指令的名字时应为xxxYyy驼峰式声明法</p>
+  <br />
+    <div ng-app="myApp">
+        <div>
+          <span style="color:red"> restrict : 'ECAM',</span><br /> 定义的当前属性在html中通过什么形式显示指令<br />
+          约束 : E代表标签形式 C通过样式形式 A同过属性形式 M通过注释显示。
+        </div><br />
+        <div>
+           <span style="color:red">template : 模板的内容</span>
+           <br /><span style="color:red">默认替换节点内容，</span>这个内容会根据replace参数的设置替换节点或只替换节点内容。 
+        </div><br />
+        <div>
+            <span style="color:red"> replace :true</span> 替换节点标签为模板内容
+            <br />
+            *replace : 如果此配置为true则替换指令所在的元素，如果为false或者不指定，则把当前指令追加到所在元素内部
+            <br />
+            *对于restrict为元素(E)在最终结果中是多余的，<span style="color:red">所有replace通常设置为true</span>
+
+        </div>
+        <br />
+        <span style="color:red">标签形式：</span>
+        <custom-tags>123123</custom-tags><br />
+
+        <span style="color:red">样式形式：</span>
+        <div class="custom-tags"></div><br />
+
+        <span style="color:red">属性形式：</span>
+        <div custom-tags></div><br />
+        
+         <span style="color:red">注释形式：</span>
+        <!-- directive:custom-tags -->
+        <br /><br />
+
+    </div>
+   <script type="text/javascript" src='angular.js'></script>
+   <script type="text/javascript">
+   var myApp = angular.module('myApp',[],['$compileProvider',function($compileProvider){
+    // 通过$compileProvider里的directivef方法  定义服务 自定义指令
+        $compileProvider.directive('customTags',function(){
+            // customTags(自定义标记)
+            return {
+              restrict : 'ECAM', //定义的当前属性在html中通过什么形式显示指令
+              // 约束 : E代表标签形式 C通过样式形式 A同过属性形式 M通过注释显示
+              
+              template : '<div>显示指令</div>',
+              // 模板  : '内容'(必须添加标签)
+              
+              compile : function(){
+                // console.log(1) 查看自定义的指令执行的几次
+              },
+              replace :true
+              // 替换 节点标签为模板内容
+            }
+        })
+   }]
+   );
+   // myApp.
+   </script>
+</body>
+</html>

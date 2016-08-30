@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <meta name=viewport content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
+</head>
+<body ng-app>
+    <div ng-controller="firstController" class="container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>产品编号</th>
+                    <th>产品名字</th>
+                    <th>购买数量</th>
+                    <th>产品单价</th>
+                    <th>产品总价</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in cart">
+                    <td>{{item.id}}</td>
+                     <td>{{item.name}}</td>
+                      <td>{{item.quantity}}</td>
+                       <td>{{item.price}}</td>
+                        <td>{{item.price*item.quantity}}</td>
+                        <td><button class="btn btn-danger">移除</button></td>
+                </tr>
+                <tr>
+                    <td>
+                        总购买价格
+                    </td>
+                    <td>{{totalPrice()}}</td>
+                      <td>
+                        总购买数量
+                    </td>
+                    <td>{{totalQuantity()}}</td>
+                    <td colspan="2"><button class="btn btn-danger">其他操作</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+
+    <script type="text/javascript">
+        var firstController = function($scope){
+            $scope.cart = [{
+                id : 1000,
+                name :'ipone5S',
+                quantity : "3",
+                price:4300
+            },
+            {
+                id : 3300,
+                name :'ipone5S',
+                quantity : "3",
+                price:3300
+            },
+            {
+                id : 232,
+                name :'ipone5S',
+                quantity : "3",
+                price:23000
+            },
+            {
+                id : 1000,
+                name :'ipad',
+                quantity : "5",
+                price:6900
+                }];
+            // 计算总购买数
+            $scope.totalPrice = function(){
+                var total = 0;
+                angular.forEach($scope.cart,function(item){
+                    total += item.quantity * item.price;
+                });
+                return total;
+            };
+            $scope.totalQuantity = function(){
+                var total = 0;
+                angular.forEach($scope.cart,function(item){
+                    total += Number(item.quantity);
+                });
+                return total;
+            }
+
+        }
+    </script>
+    <script type="text/javascript" src="angular.js"></script>
+</body>
+</html>

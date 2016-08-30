@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>数据绑定</title>
+</head>
+<!-- 
+	所有需要ng管理的代码必须包裹在ng-app指令的元素中
+	ng-app是ng的入口，表示当前元素的所有指令都会被angular管理(对每一个指令进行分析和操作)
+ -->
+<body ng-app>
+	
+	<!-- 
+		view(视图) => 123
+		model(模型) => 123
+		3个view
+		双向数据绑定
+	 -->
+
+	<input type="text" value="" ng-model="name">
+	<!-- angularJS 表达式-->
+		{{ name }}
+	<input type="text" value="" ng-model="name">
+
+	<script type="text/javascript" src="angular.js"></script>
+</body>
+</html>

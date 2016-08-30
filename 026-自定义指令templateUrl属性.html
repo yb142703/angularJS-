@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+</head>
+<body>
+    <h1>templateUrl</h1>
+    <p>
+        * templateUrl : 加载模板所要使用的URL <br />
+        * 可以加载当前模板内对应的text/ng-template script id <br />
+        *在使用chrome浏览器时。“同源策略”会组织chrome从file://中记载模板，并显示一个"Access-Control-Allow-Origin"不允许源为null，可以把项目放在<span style="color:red">服务器上 或 本地服务器加载</span>，或者给Chrome设置一个标志，命令为: chrome -allow-file-access-from-files
+    </p><br /><br />
+
+    <div ng-app="myApp">
+
+<!-- 当前模板对应的id引入模板 -->
+    <script type="text/ng-template" id="customTags2">
+        <div>
+           hello {{ name }}
+           <br/>
+           当前模板内对应的text/ng-template的ID加载模板
+        </div>
+    </script>
+
+        <div ng-controller="firstController">
+            <span style="color:red">直接用angular变量表达式展示：</span>{{ name }}
+            <br /><br />
+            <span style="color:red">通过自定义指令引入模板: </span>
+            <custom-tags></custom-tags>
+            -->模板编写的用是angular变量表达式 直接显示到页面
+            <br />  <br />
+            <span style="color:red">通过当前模板内对应的text/ng-template的ID加载模板: </span>
+            <custom-tags2></custom-tags2>
+
+        </div>
+
+    </div>
+
+    <script type="text/javascript" src="angular.js"></script>
+    <script type="text/javascript">
+    var myApp  = angular.module("myApp",[])
+    // 定义自定义指令
+    .directive('customTags',function(){
+        // customTags(自定义标记)
+        return {
+          restrict : 'ECAM', //定义的当前属性在html中通过什么形式显示指令
+          // 约束 : E代表标签形式 C通过样式形式 A同过属性形式 M通过注释显示
+          
+          // template : '<div>这是一个自定义指令模板</div>',
+          // 模板  : '内容'(必须添加标签)
+          
+          compile : function(){
+            // console.log(1) 查看自定义的指令执行的几次
+          },
+          // replace :true,
+          // 替换 节点标签为模板内容 
+          
+          templateUrl : '026-引入的HTML模板.html'
+          // 引入模板地址 :***.html
+        }
+    })
+
+    // 定义当前模板对应的模板
+    .directive('customTags2',function(){
+        return {
+            restrict : 'ECAM',
+            templateUrl : "customTags2",
+            replace : true
+        }
+    })
+
+    .controller('firstController',function($scope){
+        $scope.name = '张三';
+    })
+    </script>
+</body>
+</html>

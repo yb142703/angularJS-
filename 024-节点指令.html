@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <style type="text/css">
+    .blue{
+        color:blue;
+    }
+    .red{
+        color:red;
+    }
+    </style>
+</head>
+<body>
+    <div ng-app="myApp">
+        <div ng-controller="firstController">
+               <div ng-style="{{ defaulsStyle }}">
+                 ng-style:
+                 <br>
+                -->行内定义:
+                 ng-style="{'color':'red','margin-top':'50px'}
+                <br />
+                -->调用变量名:
+                 ng-style="{ { angualr变量名 } }
+               </div>
+               <br />
+                <div ng-class="{ blue : true}">
+                    ng-class:
+                    <br />
+                    -->ng-class ="{className:条件}"
+                    123123
+                </div>
+                <br />
+                <ul ng-repeat="Obj in obj" ng-class-even="'red'" ng-class-odd=" 'blue' ">
+                    <li>{{ Obj.list }}</li>
+                    <li>PS:字符串表示要带单引号</li>
+                </ul>
+                <br />
+                <div>
+                    ng-hide ng-show 条件显示隐藏
+                </div>
+                <br />
+                <div>
+                    ng-swich on = “'条件'”<br />
+                    ng-swich-when = "true"<br />
+                    ng-swich-when = "false"<br />
+                    <span style="color:red">条件等于true时候显示true状态 <br /> 条件等于flase时候显示flase状态<br />
+                    默认显示flase
+                    </span>
+                </div>
+                <br />
+                <div>
+                    <img ng-src="{{ ngSrc }}" alt=""  width="200"  />
+                    <br />
+                    ng-src 加载完成时,加载引入的图片地址(HTML加载无图片的链接会报错ng-src则不显示)<br />
+                    ng-href 与 ng-src 原理一样，对引用地址做出了延迟处理
+                </div>
+                <br />
+                <div>
+                    ng-if="条件" --> 如果条件是true则显示内容
+                </div>
+
+        </div>
+    </div>
+
+    <script type="text/javascript" src="angular.js"></script>
+    <script type="text/javascript">
+    var myApp = angular.module('myApp',[]);
+    myApp.controller('firstController',function($scope){
+         // 定义样式对象
+       $scope.defaulsStyle = {
+            'color':'red','margin-top':'50px'
+        }
+        // 奇数与偶数的定义
+        $scope.obj = [{
+            "list":"class-odd代表奇数class数据"
+        },{
+            "list":"class-even代表偶数class数据"
+        }];
+        // ng-src定义图片地址
+        $scope.ngSrc= 'https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo/bd_logo1_31bdc765.png';
+    })
+
+    </script>
+</body>
+</html>

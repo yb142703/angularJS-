@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
+    <style type="text/css">
+    .Color{
+        color:pink;
+    }
+    </style>
+</head>
+<body>
+        
+    <div class="container" ng-app='product'>
+        <div class="navbar navbar-default" role="navigation">
+             <form class="navbar-form navbar-left" role="search">
+                <div class="input-group">
+                  <input type="text" class="form-control" ng-model="search" placeholder="">
+<!--                    <span class="input-group-btn">
+        <button class="btn btn-default" type="button">Go!</button>
+      </span> -->
+                </div>
+<!--                 <button type="submit" class="btn btn-default">搜索</button> -->
+
+              </form>
+        </div>
+        <p style="color:red">* 通过定义ng-model="search" 数据里面过滤 search 来查找对象</p>
+        <table class="table" ng-controller="productController">
+            <thead>
+                <tr>
+                <!--
+                 ng-class="{ dropup:order ===''}
+                 添加class .dropup的条件 是order=''
+                 -->
+                    <th ng-click="changeOrder('id')" ng-class="{ dropup:order ===''}">
+                        产品编号
+                        <!--
+                         ng-class="{Color:orderType === 'id'}"
+                         添加class .Color的条件 orderType ='当前传入的type'
+                         -->
+                        <span ng-class="{Color:orderType === 'id'}" class="caret"></span>
+                    </th>
+                    <th ng-click="changeOrder('name')" ng-class="{ dropup:order ===''}">
+                        产品名称
+                        <span ng-class="{ Color:orderType === 'name'}"class="caret"></span>
+                    </th>
+                    <th ng-click="changeOrder('price')" ng-class="{ dropup:order ===''}">
+                        产品价钱
+                        <span ng-class="{ Color:orderType === 'price'}" class="caret"></span>
+                    </th>
+                </tr>
+            </thead>  
+            <tbody>
+                <tr ng-repeat="item in productData | filter:search | orderBy:order + orderType" >
+                <!-- <tr ng-repeat="item in productData | filter:{id:search}"> 通过ID来查找
+                    orderBy:order + orderType 排序过滤
+                    自定义排序条件 order='-'      orddrType='ID'
+                 -->
+                    <td>{{ item.id }}</td> 
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.price | currency:'￥ ' }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <script type="text/javascript" src='angular.js'></script>
+    <script type="text/javascript">
+
+        angular.module('product',[])
+        .service('productData',function(){
+            return [
+                {
+                    id:3333,
+                    name:'iphone',
+                    price:5000
+                },
+                {
+                    id:4444,
+                    name:'ipad',
+                    price:2500
+                },
+                {
+                    id:1111,
+                    name:'Imac',
+                    price:6000
+                },
+                {
+                    id:2222,
+                    name:'Ipad Mini',
+                    price:1500
+                },
+                {
+                    id:5555,
+                    name:'Iphone7',
+                    price:8000
+                }
+            ]
+ cope.order = "-";
+
+            $scope.changeOrder = function(type){
+                $scope.orderType = type;
+                if ($scope.order === '') {
+                     $scope.order = '-';
+                }else{
+                    $scope.order = '';
+                }
+            }
+        })
+
+    </script>
+</body>
+</html>

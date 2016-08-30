@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>angualar内置指令</title>
+</head>
+<body>
+    <!-- 
+        什么是指令
+        *可以利用指令来扩展HTML标签，增加声明式语法来实现想做的任何事，可以对应用有特殊意义的元素和属性来替换一般的HTML标签
+        *angular内置了非常多的指令,ng-app、ng-controller
+        
+        指令与HTML校验
+        * angular 内置指令的语法，以ng开始，代表angular命名空间，连接符后面的内容代表指令的名称
+        * 指令的语法在很多HTML校验规则中是不合法的，Angualar提供了多种调用指令方法，可以顺利通过不同校验的规则1
+     -->
+    <div ng-app="myApp">
+        <p>{{ 1+1 }} <br />*JS没加载完会显示字符串</p>
+        <p><span  ng-bind="1+1"></span><br />*JS没加载完会显示bind渲染的数据</p>
+    </div>
+    
+
+     <script type="text/javascript" src="angular.js"></script>
+     <script type="text/javascript">
+     angular.module('myApp',[]);
+
+     </script>
+</body>
+</html>

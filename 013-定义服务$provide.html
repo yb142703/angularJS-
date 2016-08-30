@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+</head>
+<body>
+    <!-- 
+        定义服务$provider
+        *服务本身就是一个任意的对象。
+        *ng提供服务的过程设计它的 *依赖注入* 机制。
+        *angular使用$provider对象来实现自动依赖注入机制，注入机制通过调用一个provider的$get()方法，把得到的对象作为参数进行相关调用
+        *$provide.provider是一种定义服务的方法，$provider还提供了很多很简便的方法，这些简便的方法 *还直接被module所引用*。
+     -->
+    <div ng-app="myApp">
+    <!-- ng-app 模块名 -->
+        <div ng-controller="firstController">
+            {{name}}
+        </div>
+    </div>
+
+     <script type="text/javascript" src="angular.js"></script>
+     <script type="text/javascript">
+        var myApp = angular.module('myApp',[],function($provide){
+            // 自定义服务
+            $provide.provider('Customservive',function(){
+                this.$get = function(){
+                    return {
+                        message:"yangbo 22"
+                    }
+                }
+            })
+                // 定义 多个服务
+            $provide.provider('Customservive2',function(){
+                this.$get = function(){
+                    return {
+                        message:"yangbo 22"
+                    }
+                }
+            })
+
+        });
+        // 定义模块下指令
+        myApp.controller('firstController',function(Customservive,$scope,Customservive2){
+            // 自动匹配参数 接口
+            $scope.name ="yangbo";
+            console.log(Customservive);
+            console.log(Customservive2);
+        });
+
+     </script>
+</body>
+</html>

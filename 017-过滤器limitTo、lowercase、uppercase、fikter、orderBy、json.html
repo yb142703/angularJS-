@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+</head>
+<body>
+    
+     <div ng-app="myApp">
+        <div ng-controller="firstController">
+            
+            <p>
+            <!-- 1,2,3,4,5 -->
+                limitTo(向前限制)：-->{{ [1,2,3,4,5,6,7] | limitTo:5 }}
+            </p>
+            <p>
+                limitTo(向后限制)：-->{{ [1,2,3,4,5,6,7] | limitTo:-5 }}
+            </p>
+            <p>
+               lowercase(转小写字母):--> {{ data.message | lowercase}}
+            </p>
+            <p>
+               uppercase(转大写字母):--> {{ data.message | uppercase}}
+            </p>
+            <p>
+                filter(过滤对象内容 匹配Value值):-->{{ data.city | filter:"山西" }}
+            </p>
+            <p>
+                filter(过滤对象内容:{**:'**'}):-->{{ data.city | filter: {py:'g'} }}
+            </p>
+            <p>
+                <span style="color:red">添加拓展过滤:</span>
+                 <br />
+                filter(过滤对象内容:{**:'**'}):-->{{ data.city | filter: checkName }}
+            </p>
+             <p>
+                orderBy(排序):-->{{ data.city | orderBy:'py' }}
+                <br />
+                <span style="color:red">**默认顺序:-> 键的值(py:???)是正序 A~Z</span>
+            </p>
+            <p>
+                orderBy(排序):-->{{ data.city | orderBy:'-py' }}
+                <br />
+                <span style="color:red">**加-顺序:-> 键的值(py:???)是逆序 Z~A
+                </span>
+            </p>
+        </div>
+    </div>
+    
+    <script type="text/javascript" src='angular.js'></script>
+    <script type="text/javascript">
+    angular.module('myApp',[])
+    .factory('Data',function(){
+        return {
+            message:'YANGbo',
+            city: [
+                {
+                    name:'上海',
+                    py:'shanghai'
+                },{
+                    name:'北京',
+                    py:'beijing'
+                },
+                {
+                    name:'山西',
+                    py:'shanxi'
+                },{
+                    name:'中国',
+                    py:'zhongguo'
+                }
+            ]
+        }
+    })
+    .controller('firstController',function($scope,Data,$filter){
+        $scope.data = Data;
+        $scope.times = new Date; 
+        // 过滤器
+        // 添加拓展过滤
+        $scope.checkName = function(obj){
+            if (obj.py.indexOf('s') === -1) {
+                return false;
+            }else{
+                return true;
+            }
+        };
+        // 过滤json
+        var json = $filter('json')(Data);
+        console.log(json)
+             
+    })
+    </script>
+</body>
+</html>

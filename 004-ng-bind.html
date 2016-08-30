@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>004-ng-bind</title>
+</head>
+<body>
+		
+	<div ng-app="myApp">
+		<div ng-controller="firstController">
+			<input type="text" value="" ng-model="name" />
+			<input type="text" value="" ng-model="age" />
+			<!-- 
+				ng-bind 
+				绑定表达式  ng-bind="name" =>{{ name }}
+				在angularJS没完全加载时页面不显示内容
+			 -->
+			<div ng-bind="name"></div>
+			<div ng-bind="age"></div>
+		</div>
+	</div>
+
+
+	<script type="text/javascript" src="angular.js"></script>
+	<script type="text/javascript">
+		// var firstController = function($scope){
+		// 	// $scope作用域
+		// 	// 申明一个model(模型)
+		// 	$scope.name = "yb";
+		// 	$scope.age = 22;
+		// }
+
+		// AngularJS 模块定义应用:
+		// AngularJS 模块 
+		var app = angular.module('myApp',[]);
+		
+		// AngularJS 控制器
+		app.controller('firstController',function($scope){
+			$scope.name = "yangbo";
+			$scope.age = 22;
+		});
+	</script>
+</body>
+</html>

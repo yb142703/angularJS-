@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+</head>
+<body>
+    <!-- 
+        什么是angular过滤器
+        *是用于对数据的格式化，或者筛选的函数，可以直接在模板中通过一种语法使用
+        *{{ expression | fiter }}
+        *{{ expression | fiter1 | fiter2 }}
+        *{{ expression | fiter1:param,..... }}
+     -->
+    <div ng-app="myApp">
+        <div ng-controller="firstController">
+           <!--number数字过滤器  -->
+           <p>
+                <!-- 123,456,789 -->
+                {{ 123456789 | number }}
+           </p>
+            <p>
+             <!-- 123,456,789.000 保留三位小数点-->
+                {{ 123456789 | number:3 }}
+            </p>
+            <!-- currency货币过滤器 -->
+            <p>
+                <!-- $999,999.00  -->
+                {{ 999999 | currency }}
+            </p>
+            <p>
+                <!-- $999,999.00  -->
+                {{ 999999 | currency:'￥' }}
+            </p>
+            <!-- 时间过滤器  -->
+            <p style='color:red'>
+                时间 : {{ times | date:'y-MM-dd HH:mm:ss'}}
+            </p>
+            <p>
+                <!-- "2016-08-24T02:17:11.098Z" -->
+               0:--> {{ times }}
+            </p>
+            <p>
+                <!-- Aug 24, 2016 10:24:10 AM -->
+               1.medium:->{{ times | date:'medium' }}
+            </p>
+            <p>
+                <!-- 8/24/16 10:24 AM -->
+               2.short:->{{ times | date:'short' }}
+            </p>
+            <p>
+                <!-- Wednesday, August 24, 2016 -->
+                3.fullDate:->{{ times | date:'fullDate' }}
+            </p>
+            <p>
+                <!-- August 24, 2016 -->
+                4.longDate:->{{ times | date:'longDate' }}
+            </p>
+            <p>
+                <!-- Aug 24, 2016 -->
+               5.mediumDate:-> {{ times | date:'mediumDate' }}
+            </p>
+            <p>
+                <!-- 8/24/16 -->
+                6.shortDate:->{{ times | date:'shortDate' }}
+            </p>
+            <p>
+                <!-- 10:24:46 AM -->
+                7.mediumTime:->{{ times | date:'mediumTime' }}
+            </p>
+            <p>
+                <!-- 10:24 AM -->
+                8.shortTime:->{{ times | date:'shortTime' }}
+            </p>
+            <p>
+                年： <br />
+               year:"y"--> {{ times | date:'y' }}
+               <br />
+               year:"yy"--> {{ times | date:'yy' }}
+               <br />
+               year:"yyyy"--> {{ times | date:'yyyy' }}
+            </p>
+            <p>
+                月：<br />
+               month:"M"--> {{ times | date:'M' }}
+               <br />
+               month:"MM"--> {{ times | date:'MM' }}
+               <br />
+               month:"MMM"--> {{ times | date:'MMM' }}
+                <br />
+               month:"MMMM"--> {{ times | date:'MMMM' }}
+            </p>
+            <p>
+                日：<br />
+                day:"d"--> {{ times | date:'d' }}
+               <br />
+               day:"dd"(Day in month)--> {{ times | date:'dd' }}
+               <br />
+               day:"EEEE"(Day in week星期？)--> {{ times | date:'EEEE' }}
+                <br />
+               day:"EEE"(星期？简写)--> {{ times | date:'EEE' }}
+            </p>
+             <p>
+                小时：<br />
+                hour:"HH"(24小时制带0)--> {{ times | date:'HH' }}
+               <br />
+               hour:"H"(24小时制)--> {{ times | date:'H' }}
+               <br />
+               hour:"h"(12小时制不带0)--> {{ times | date:'h' }}
+                <br />
+               hour:"hh"(12小时制带0)--> {{ times | date:'hh' }}
+            </p>
+            <p>
+                分：<br />
+                minute:"mm"(带0)--> {{ times | date:'mm' }}
+               <br />
+               minute:"m"(不带0)--> {{ times | date:'m' }}
+            </p>
+             <p>
+                秒：<br />
+                second:"ss"(带0)--> {{ times | date:'ss' }}
+               <br />
+               second:"s"(不带0)--> {{ times | date:'s' }}
+            </p>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="angular.js"></script>
+    <script type="text/javascript">
+        angular.module('myApp',[])
+        .factory('Data',function(){
+            return {
+                message 
+                : '共享的资源'
+            }
+        })
+
+        .controller('firstController',function($scope,Data){
+            $scope.data = Data;
+             $scope.times = new Date();
+        })
+    </script>
+</body>
+</html>

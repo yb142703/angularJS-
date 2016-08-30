@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+</head>
+<body>
+    <div ng-app="myApp">
+        <div ng-controller="firstController">
+        <p style="font-size:14px;color:#ccc">定义事件及事件对象的使用</p>
+                <button ng-click="changeStatus($event)" id="btn">切换状态</button>
+                <p style="color:red">{{ status }}</p>
+        </div>
+    </div>
+
+    <p>ng-click,ng-change.....内置事件指令，默认的执行 脏检查$apply方法(更新页面)    <br /></p>
+
+    <script type="text/javascript" src="angular.js"></script>
+    <script type="text/javascript">
+    var myApp = angular.module('myApp',[]);
+
+    myApp.controller('firstController',function($scope){
+        $scope.status = true;
+        $scope.changeStatus = function(event){
+            // event相当于js事件对象
+            // event.target 查找事件对象
+            // event.stopPropagation(); 阻止事件冒泡
+            console.log(event)  
+          
+           //  -->注意事件执行时,代码解析的过程 事件执行的前后顺序
+            // 定义取反
+            $scope.status = !$scope.status; 
+
+           // 通过element转换成 jquery切换
+           angular.element(event.target).text('切换状态'+$scope.status)
+           
+
+        }
+    })
+    </script>
+</body>
+</html>

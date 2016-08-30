@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>angualar内置指令</title>
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
+</head>
+<body>
+    <p>
+        什么是指令<br />
+        *可以利用指令来扩展HTML标签，增加声明式语法来实现想做的任何事，可以对应用有特殊意义的元素和属性来替换一般的HTML标签
+        <br />*angular内置了非常多的指令,ng-app、ng-controller
+        <br /><br />
+        指令与HTML校验
+       <br /> * angular 内置指令的语法，以ng开始，代表angular命名空间，连接符后面的内容代表指令的名称
+      <br />  * 指令的语法在很多HTML校验规则中是不合法的，Angualar提供了多种调用指令方法，可以顺利通过不同校验的规则
+    </p> 
+    <div class="container">
+        <table class="table table-bordecolor:red;">
+        <!-- 指令和HTML校验 -->
+            <thead>
+                <tr>
+                    <th>校验器</th>
+                    <th>格式</th>
+                    <th>示例</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>none</td>
+                    <td>namespace-name</td>
+                    <td>ng-bind</td>
+                </tr>
+                <tr>
+                    <td>XML</td>
+                    <td>namespace:name</td>
+                    <td>ng:bind</td>
+                </tr>
+                <tr>
+                    <td>HTML5</td>
+                    <td>data-namespace-name</td>
+                    <td>data-ng-bind</td>
+                </tr>
+                <tr>
+                    <td>XHTML</td>
+                    <td>x-namespace-name</td>
+                    <td>x-ng-bind</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+    <div ng-app="myApp">
+        <p>{{ 1+1 }} <br />不加ng-bind*JS没加载完会显示字符串</p>
+        <p><span  ng-bind="1+1"></span><br />填加ng-bind*JS没加载完会显示bind渲染的数据</p>
+        <p><span ng-bind-template='{{ 1+1 }}'></span>
+             <br />ng-bind-template*添加模板
+        </p>
+       
+        <ul ng-init="cityArr = ['上海','北京','山西']"> <!-- $scope.ctiyArr === ['上海','北京','山西'] -->
+            <li ng-repeat="city in cityArr">
+                <span>
+                   index: {{ $index }}
+                   <span style='color:red;'>->当前索引</span>
+                </span><br />
+                <span>
+                    first: {{ $first }}
+                    <span style='color:red;'>->是否为头元素</span>
+                </span><br />
+                <span>
+                    middle: {{ $middle }}
+                    <span style='color:red;'>->是否为非头元素</span>
+                </span><br />
+                <span>
+                    last: {{ $last }}
+                    <span style='color:red;'>->是否为尾元素</span>
+                </span><br />
+                <span>
+                    city: {{city}}
+                    <span style='color:red;'> ->遍历数组里的每一个对象</span>
+                </span>
+                <hr />
+            </li>
+        </ul>
+
+        <div>
+            <p>ng-include = " '***.html' "<br />
+            (include 包含)
+            ->加载某一个页面内容的指令，另一种书写格式:
+            ng-includ src=" '***.html' "</p>
+        </div>
+    </div>
+    
+
+     <script type="text/javascript" src="angular.js"></script>
+     <script type="text/javascript">
+     angular.module('myApp',[]);
+     // myApp.controller('firstController',function(){
+
+     // })
+     </script>
+</body>
+</html>

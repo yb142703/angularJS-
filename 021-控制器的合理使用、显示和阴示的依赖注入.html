@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+</head>
+<body>
+    <!-- 
+    正确的使用controller
+    * controller不应该尝试做太多的事情，他应该仅仅包含单个视图所需要的业务逻辑
+    * 保持controller的简单性，常见办法是抽出那些不属于controller的工作到servive中，在controller通过依赖注入来使用这些service
+    
+    不要在controller中做以下事情：
+    1. 任何类型的DOM操作 - controller应该仅仅用于业务逻辑，任何表现逻辑放到controller中，大大地影响应用逻辑的可测试性。angular为了自动操作(更新)DOM，提供的数据绑定。如果希望执行我们自定义的DOM操作，可以把表现逻辑抽取到directive(指令)中
+    2. input formatting(输入格式化) -使用angular form controls代替。
+    3. Output filtering (输出格式化过滤) -使用angular filters代替
+    4. 执行无状态或有状态的、controller共享的代码、使用angular services代替。
+    5. 实例化或者管理其他组件的生命周期(例如创建一个服务实例)
+
+     -->
+    <div ng-app='myApp'>
+        <div ng-controller="secondController">
+            
+        </div>
+        <div ng-controller="aaa">
+            
+        </div>
+    </div>
+
+
+
+     <script type="text/javascript" src='angular.js'></script>
+     <script type="text/javascript">
+        var myApp = angular.module('myApp',[],function(){
+            //也可以用显示的依赖注入的方式写
+            
+        })
+        .factory('customService',function($window){
+            console.log($window);
+        })
+
+        // 隐示的依赖注入
+        // *-> 直接在函数里注入
+        .controller('firstController',function($scope){
+
+        });
+        
+        // 显示的依赖注入 
+        // 优点:压缩不会影响注入 -->建议用显示依赖注入写全
+        // *-> 显示的依赖注入需要在数组里面添加参数字符串，然后用传参的方式对应注入['$scope','$filter',function(a,b){ a===$scope;b===$filter}
+        myApp.controller('secondController',['$scope','$filter',function(a,b){
+            // console.log(a);
+            // console.log(b('json')([1,3,5,2,4,2]))
+                 
+        }]);
+        
+
+        // 定义控制器的方式
+        function aaa(a){
+            console.log(a);
+        }
+        // 通过inject(注入)属性
+        aaa.$inject = ['$scope'];
+     </script>
+</body>
+</html> 

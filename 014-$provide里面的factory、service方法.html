@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+</head>
+<body>
+    <!-- 
+    $provider.factory(工厂模式)
+    *factory(工厂)方法直接把一个函数当成是一个对象的$get()方法
+    *@see module.factory
+    *返回的内容可以使任何类型
+     -->
+    <div ng-app="myApp">
+    <!-- ng-app 模块名 -->
+        <div ng-controller="firstController">
+            {{name}}
+        </div>
+    </div>
+
+     <script type="text/javascript" src="angular.js"></script>
+     <script type="text/javascript">
+       var myApp = angular.module('myApp',[],function($provide){
+            //自定义服务 -->初始化服务
+            $provide.provider('Customservive',function(){
+                this.$get=function(){
+                    return {
+                        massges : "daimakuaia"
+                    }
+                }
+            });
+
+            // 自定义工厂
+            $provide.factory('dingFacroty',function(){
+                return '123123123';
+                // 自定义工厂模式 可以是任何类型
+            });
+
+            // 自定义服务 
+            $provide.service('Customservive2',function(){
+                return {
+                    name:'yb',
+                    age : 22
+                }
+                // 对于自定义服务  返回的必须是对象(引用类型)
+            })
+       });
+       myApp.controller('firstController',function($scope,dingFacroty,Customservive,Customservive2){
+            $scope.name  = "yangbo";
+            console.log(dingFacroty);
+            console.log(Customservive);
+             console.log(Customservive2);    
+       })
+           
+     </script>
+</body>
+</html>

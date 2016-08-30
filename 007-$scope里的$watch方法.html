@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+</head>
+<body>
+    <div ng-app="">
+
+    <!-- 
+        $watch   
+    *在digest执行时，如果watch观察的value与上次执行时不一样是，就会触发
+
+     -->
+        <div ng-controller="firstController">
+            <input type="text" value="" ng-model="name" />
+            改变次数:{{count}} >>> {{name}}<br>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var firstController = function($scope){
+            $scope.name = "yangbo";
+            $scope.count = 0;
+
+            // 监听一个model 当一个model每次改变时 都会触发第2个函数
+            $scope.$watch("name",function(newVal,oldVal){
+                ++$scope.count;
+                if ($scope.count > 30) {
+                    $scope.name="已经大于30次了";
+                };
+            });
+
+
+            $scope.data = {
+                name : "李四",
+                count : 50
+            }
+            $scope.$watch("data",function(){
+                // 监听一个对象 第三个参数设置为true 对象全部检测
+            },true);
+        }
+    </script>
+    <script type="text/javascript" src="angular.js"></script>
+</body>
+</html>

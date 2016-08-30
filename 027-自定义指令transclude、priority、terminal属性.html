@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+</head>
+<body>
+    <p>transclude(嵌入)、priority(优先权)、terminal(终端 终点)</p>
+    <h1>transclude</h1>
+    <p>
+        * transclude: 指令元素中的原来的子节点移动到一个新模板内部
+        <br /><br />
+        * 当为true时，指令会删掉原来的内容，使你的模板可以用ng-transclude指令进行重新插入
+    </p>
+     <h1>priority && terminal</h1>
+     <p>
+         * priority:设置指令在模板中的执行顺序，顺序是相对于元素上其他执行而言，默认为0，从从大到小的顺序依次执行
+         <br /><br />
+         * 设置优先级的情况比较少，像ng-repeat,在遍历元素的过程中，需要angular先拷贝生成模板元素，在应用其他指令，所以ng-repeat默认的priority是1000
+         <br /><br />
+         * terminal 是否以当前指令的权重为结束界限。如果这值设置为true，则节点中权重小于当前而指令的其他指令不会被执行。相同权重的会执行。
+     </p> <br /><br /> <br />
+
+    <div ng-app="myApp">
+       <div ng-controller="firstController">
+       <h2>代码部分</h2>
+            <custom-tags>原始数据</custom-tags>
+            <br />
+
+            <div>
+                <span style='color:red'>priority:-1 定义两个同时调用指令的权限:</span>
+                <span>
+                    如果两个directive都添加template会报错(默认:从左往右解析 有报错信息)
+                    <br />
+                    添加<span style='color:red'>terminal:true </span>priority(优先权)小于0的directive都不会执行
+                </span>
+                <span custom-tags2 custom-tags3></span>
+            </div>
+       </div>
+    </div>
+
+     <script type="text/javascript" src='angular.js'></script>
+     <script type="text/javascript">
+     var myApp = angular.module('myApp',[])
+     .directive('customTags',function(){
+        return {
+            restrict:"ECMA",
+            template:
+            "<div>\
+                <span style='color:red'>添加的新数据:</span> 这是一条新数据<br />\
+                <span style='color:red'>保留原始数据 添加ng-transclude:true</span>\
+                <span ng-transclude></span>\
+            </div>",
+            replace: true,
+            transclude:true,
+            // transclute 填写turn 会保存原始数据
+        }
+     })
+
+   .directive('customTags2',function(){
+        return {
+            restrict:"ECMA",
+            template:"<div>2</div>",
+            replace: true,
+            priority:-1
+        }
+     })
+
+    .directive('customTags3',function(){
+        return {
+            restrict:"ECMA",
+            template:"<div><span style='color:red'>priority权限默认为0，添加terminal>>> </span>3</div>",
+            replace: true,
+            terminal:true
+            // 只要priority小于0的directive都不会执行
+
+        }
+     })
+
+     .controller('firstController',function($scope){
+        $scope.name = "张三"
+    })
+
+     </script>
+</body>
+</html>

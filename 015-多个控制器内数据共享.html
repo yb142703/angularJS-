@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+</head>
+<body>
+    <div ng-app='myApp'>
+        <div ng-controller='firstController'>
+            first.data:<input type="text" ng-model='data.name'/>
+            <br />
+            first.Data:<input type="text" ng-model='Data.message'/>
+            <p>
+                first-name:{{ data.name }}
+            </p>
+            <p>
+                first-message:{{ Data.message }}
+            </p>
+        </div>
+
+        <div ng-controller='secondController'>
+            <p>
+                second-name:{{ data.name }}
+            </p>
+             <p>
+                second-message:{{ Data.message }}
+            </p>
+        </div>
+    </div>
+
+    <script type="text/javascript" src='angular.js'></script>
+    <script type="text/javascript">
+    angular.module('myApp',[])
+
+    .factory('Data',function(){
+        // 创建共用的数据工厂
+        return {
+            message: '共享的数据'
+        };
+
+    })
+
+    .controller('firstController',function($scope,Data){
+        // console.log($scope);
+        $scope.data = {
+            name : "张三"
+        }
+        $scope.Data = Data;
+    })
+    .controller('secondController',function($scope,Data){
+        $scope.data = $scope.$$prevSibling.data;
+             // $$查找上一个兄弟
+        $scope.Data = Data;
+    })
+    </script>
+</body>
+</html>
