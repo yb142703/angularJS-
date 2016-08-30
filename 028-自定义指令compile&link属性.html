@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+</head>
+<body>
+    <h1>AngularJS 指令编译三阶段</h1>
+    <p>
+        1. 标准浏览器API转换
+        <br />
+        将html转化成dom，所以自定义的html标签必须符合html的格式
+    </p>
+    <p>
+        2. Angular compile(编译)
+        <br />
+        搜索匹配directive(指令)，按照priority(优先级)排序，并执行directive上的compile方法
+    </p>
+    <p>
+        3. Angular link
+        <br />
+        执行directive上的link方法，进行scope绑定及事件绑定
+    </p>
+    <h2>compile</h2>
+    <p>
+        * compile:function(tElement,tAttrs,transclude)
+        <br />
+        <span style="color:red">
+            tElement 当前元素的jquery对象<br />
+            tAttrs 当前元素的属性<br />
+            transclude 定义的嵌入 没有返回false
+        </span>
+        <br />
+        <br />
+        * complie函数用来对模板自身进行转换，仅仅在编译阶段运行一次
+        <br />
+        * complie中直接反馈的函数是postLink，表示link参数需要执行的函数，也可以返回一个对象里面包含preLink和postLink
+        <br />
+        当定义complie参数时，将无视link参数，因为complie里返回的就是该指令需要执行的link函数
+    </p>
+    <h3>compile和link的使用时机</h3>
+    <p>
+        * compile <br />
+        在dom渲染前对它进行变型，并且不需要scope参数<br />
+        在所有相同directive里共享某些方法，这时应该定义在compile里，性能会比较好<br />返回值就是link的function，这时就是共享使用的时候
+        <br /><br />
+        * link <br />
+        对特定的元素注册时间<br />
+        需要用到scope参数来实现dom元素的一些行为
+    </p>
+    <h3>link</h3>
+    <p>
+        * link(scope,iElement,iAttrs,controller)
+        <br />
+        * link 参数代表的是 <span style="color:red">complie返回的postLink</span>
+        <br />
+        * preLink 表示 <span style="color:red">在编译阶段之后，指令连接到子元素之前运行</span>
+        <br />
+        * postLink 表示 <span style="color:red">会在所有子元素指令都连接之后才运行</span>
+        <br />
+        * link <span style="color:red">函数负责在模型和视图之间进行动态关联，对于每个指令的每个实例，link函数都会执行一次</span>
+    </p>
+ <h2>代码部分</h2>  
+    <div ng-app="myApp">
+        <div ng-controller="firstController">
+            <div ng-repeat="user in users" custom-tags custom-tags2></div>
+            <p style="color:red">
+                1.div 转化为dom结构<br />
+                2.搜索定义的directive(指令) 默认的优先级，哪个先定义哪个先使用
+                <br /> <br />
+                compile有一个返回值link，主要是处理当前的scope
+            </p>
+        </div>
+        <div custom-tags3></div>
+    </div>
+    <script type="text/javascript" src="angular.js"></script>
+    <script type="text/javascript">
+    var i = 0;
+
+    var myApp = angular.module("myApp",[])
+    // 第一个自定义指令
+    myApp.directive('customTags',function(){
+        return {
+            restrict:"ECMA",
+            template:"<div>{{ user.name }} {{ user.i }}</div>",
+            replace:true,
+            compile:function(tElement,tAttrs,transclude){
+                // compile编译 方法
+                // tElement angular内置的jquery对象   tAttrs 当前元素的属性  transclude 定义的嵌入 没有返回false
+                
+                tElement.append(angular.element('<div style="color:blue">在compile前改变dom结构</div>'))
+
+               // 编译阶段....
+                console.log("customTags compile 编译阶段生成DOM结构....");
+                
+                return {
+                    // pre:function preLink(){} 表示在编译阶段之后，指令链接到子元素之前运行
+                    pre:function preLink(scope,iElement,iAttrs,controller){
+                        // preLink 预链接
+                        console.log('customTags preLink...');
+                    },
+                    // post:function postLink(){} 表示所有子元素指令都链接之后才运行
+                    post:function postLink(scope,iElement,iAttrs,controller){
+                       //在postLink中绑定事件
+                       iElement.on('click',function(){
+                         scope.$apply(function(){
+                            scope.user.name = '在postLink中绑定事件';
+                            scope.user.i = ++i;
+                            // 用apply方法执行脏检查 更新数据
+                         })
+                       }) 
+                        console.log('customTags all child directive Link...')
+                    }
+                }
+
+                // 直接返回 postLink
+                // return function(){
+                //     console.log('111')
+                         
+                // }
+            },
+            // 此link表示的就是 postLink
+            link:function(){
+
+            }
+        }
+    })
+    // 第二个自定义指令
+    myApp.directive('customTags2',function(){
+        return {
+            restrict:"ECMA",
+            // template:"<div>这是一个自定义模板</div>",添加两个指令 只能有一个template否则会报错
+            replace:true,
+            compile:function(){
+                // 编译阶段....
+                console.log('customTags2 compile 编译阶段生成DOM结构....')
+                return {
+                    pre:function preLink(){
+                        console.log("customTags2 preLink...");
+                             
+                    },
+                    post:function postLink(){
+                        console.log("customTags2 all child directive Link...")
+                    }
+                }
+            },
+        }
+    })
+
+    // 这里也是直接返回 postLink
+    myApp.directive("customTags3",function(){
+        // return postLink
+        return function(){
+            console.log("没有定义其他的属性，返回的是postLink")
+        }
+    })
+
+
+    myApp.controller("firstController",['$scope',function($scope){
+        $scope.users = [
+        {
+            id:10,
+            name:'张三'
+        },{
+           id:20,
+           name: '李四'
+        }
+        ]
+    }])
+    </script>
+</body>
+</html>
