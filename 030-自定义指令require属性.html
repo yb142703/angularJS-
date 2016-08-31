@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
+</head>
+<body>
+    <h1>controller && controllerAS && require</h1>
+    <p>
+        * controller <span style="color:red">他会暴露一个API，利用这个API可以在多个指令之间通过依赖注入进行通信。</span>
+        <br />
+        * controller($scope,$element,$sttrs,$transclude)
+        <br />
+        * controllerAs <span style="color:red">是给controller起个别名，方便使用</span>
+        <br />
+        * require <span style="color:red">可以将其它指令传递给自己</span>
+    </p>
+    <table class="table table-bordered">
+        <thead>
+            <tr style="background:#e5e5e5">
+                <th>选项</th>
+                <th>用法</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td> directiveName</td>
+                <td>通过驼峰的命名指定了控制器应该电邮哪一条指令，默认会从同一个元素上的指令</td>
+            </tr>
+            <tr>
+                <td>^directiveName</td>
+                <td>在父级查找指令</td>
+            </tr>
+            <tr>
+                <td>?directiveName</td>
+                <td>表示指令是可选的，如果找不到，不需要抛出移除</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>代码部分</h2>
+    <!-- 模块 -->
+    <div ng-app="myApp">
+        <!-- 控制器 -->
+        <div ng-controller="firstController">
+            <!-- 添加自定义指令 -->
+            <div book-list>
+                
+            </div>
+
+        </div>
+    </div>
+
+    <script type="text/javascript" src="angular.js"></script>
+    <script type="text/javascript">
+    var myApp = angular.module('myApp',[])
+    // 定义 自定义指令
+    myApp.directive('bookList',function(){
+        return {
+            restict :'ECAM',
+            // controller与下面的定义的 firstController一样
+            controller:function($scope){
+                // console.log($scope)
+                $scope.books =[
+                    {
+                        name:'php'
+                    },{
+                        name:'javaScript'
+                    },{
+                        name:'java'
+                    }
+                ];
+                 // 定义方法1
+                 $scope.alertS = function(){
+                    alert('内部定义调用');
+                 }
+
+                 // 定义方法2
+                 this.addBook = function(){
+                    alert('外部指令调用');
+                    //$scope.books.push({
+                    //     name:'Angular.js'
+                    // })
+                    // 这里仅仅改的是mdule层 要触发脏检查更新页面 所以要放在$apply里面
+                   $scope.$apply(function(){
+                        $scope.books.push({
+                            name:'Angular.js'
+                        })
+                        // $books = [{name:'**'},{name:'**'},{name:'**'},{name:'Angular.js'}]
+                   })
+
+                 }
+            },
+            controllerAs : 'bookListController',
+            // controllerAs 是一个参数。给上面controller定义别名
+            // template: '<ul><li ng-repeat="book in books"> {{ book.name}}</li></ul>',
+            
+             template: '<div><ul><li ng-repeat="book in books"> {{ book.name}}</li></ul><book-add></book-add></div>',
+            replace : true,
+             link:function(scope,iElement,iAttrs,bookListController){
+                // console.log(scope) scope与controller>scope作用域对象一样
+                // console.log(iElement) iElement 自定义的template元素节点
+                // console.log(iAttrs)  当前元素的属性   
+                // console.log(bookListController) bookListController 就是controller对象
+                iElement.on('click',scope.alertS)
+            }
+        }
+    })
+
+
+    myApp.directive('bookAdd',function(){
+        return {
+            restrict:'EACM',
+            template:'<button type="button">添加</button>',
+            replace:true,
+            require:"^bookList",
+            //  命令 : '^(上查找)bookList(定义的bookList指令)'
+            link:function(scope,iElement,iAttrs,bookListController){
+                iElement.on('click',bookListController.addBook)
+            }
+        }
+    })
+
+
+
+     // 控制器 控制业务逻辑
+    myApp.controller('firstController',['$scope',function($scope){
+        // console.log($scope)
+        // $scope是连接控制器跟module
+       
+    }])
+    </script>
+
+</body>
+</html>
